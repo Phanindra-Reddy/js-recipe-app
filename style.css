@@ -1,0 +1,53 @@
+
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+
+/* ----------------Home-------------- */
+
+.main-container{
+background-image: url(./recipe-wallpaper.jpg);
+  background-size: cover;
+  width: 100vw;
+  height: 300px;
+  /* max-width: 100%;
+  height: auto; */
+  font-size: 16px;
+  color:white;
+  padding:50px;
+  opacity:0.9;
+}
+.checked{
+    color:orange;
+}
+
+/* ----------------Recipes-------------- */
+.btn-circle.btn-xl { 
+    width: 70px; 
+    height: 70px; 
+    padding: 10px 16px; 
+    border-radius: 35px; 
+    font-size: 12px; 
+    text-align: center; 
+    margin:60px 20px;
+    position: fixed;
+    right:0;
+    bottom:0;
+} 
+
+#addRecipeForm{
+    position: relative;
+}
+
+
+
+/* -----------------Favourites-------------- */
+
+
+@media screen and (max-width:360px){
+    .main-container h3{
+        font-size:1.3rem;
+    }
+}
