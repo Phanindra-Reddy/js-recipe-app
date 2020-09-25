@@ -35,13 +35,53 @@ background-image: url(./recipe-wallpaper.jpg);
     position: fixed;
     right:0;
     bottom:0;
+    z-index:10;
 } 
 
 #addRecipeForm{
     position: relative;
 }
+.card {
+    /* min-height: 200px; */
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.card-img-top{
+    width:100%;
+    height:auto;
+}
+.card-text{
+    text-overflow: initial;
+    white-space: nowrap;
+    overflow: hidden;
+}
+textarea::-webkit-input-placeholder {
+    color: red;
+}
+    
+textarea:-moz-placeholder { /* Firefox 18- */
+    color: red;  
+}
+    
+textarea::-moz-placeholder {  /* Firefox 19+ */
+    color: red;  
+}
+    
+textarea:-ms-input-placeholder {
+    color: red;  
+}
+.form-control::-webkit-input-placeholder { color: red; }  /* WebKit, Blink, Edge */
+.form-control:-moz-placeholder { color: red; }  /* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder { color: red; }  /* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder { color: red; }  /* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder { color: red; }  /* Microsoft Edge */
 
-
+#yourRecipes{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(18rem,1fr));
+    grid-gap: 20px;
+    justify-items: center;
+}
 
 /* -----------------Favourites-------------- */
 
