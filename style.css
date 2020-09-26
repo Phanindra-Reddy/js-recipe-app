@@ -19,10 +19,22 @@ background-image: url(./recipe-wallpaper.jpg);
   padding:50px;
   opacity:0.9;
 }
+.recipes-conatiner{
+    margin-top:20px;
+    margin-bottom: 50px;
+}
+#homeRecipes{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(18rem,1fr));
+    grid-gap: 20px;
+    justify-items: center;
+}
 .checked{
     color:orange;
 }
-
+ul.a {
+    list-style-type: none;
+}
 /* ----------------Recipes-------------- */
 .btn-circle.btn-xl { 
     width: 70px; 
@@ -84,7 +96,6 @@ textarea:-ms-input-placeholder {
 }
 
 /* -----------------Favourites-------------- */
-
 
 @media screen and (max-width:360px){
     .main-container h3{
