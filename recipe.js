@@ -8,15 +8,16 @@ var firebaseConfig = {
     messagingSenderId: "705071174496",
     appId: "1:705071174496:web:88b335818960a0bffbc405",
     measurementId: "G-V1RLFC0MN1"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 
 // -------------------Your Recipes--------------------
 
-var userRecipe = firebase.database().ref('Recipes');
+// var userRecipe = firebase.database().ref('Recipes'/+recipe_id);
 
 var addRecipeBtn = document.getElementById('addRecipeBtn');
 addRecipeBtn.addEventListener('click', openRecipeBox);
@@ -29,7 +30,6 @@ function openRecipeBox(e){
 var addRecipeForm = document.getElementById('addRecipeForm');
 addRecipeForm.addEventListener('submit', submitRecipeData);
 
-var img=document.getElementById('output_recipe_image');
 
 function submitRecipeData(e){
     e.preventDefault();
@@ -37,96 +37,107 @@ function submitRecipeData(e){
     var d=new Date();
     var getId=d.getTime();
     var recipe_id = getId;
-    var recipe_name = getInputValue('recipe_name');
-    var recipe_intro = getInputValue('recipe_intro');
-    var recipe_ingredients = getInputValue('recipe_ingredient');
-    var recipe_procedure = getInputValue('recipe_procedure');
+    var recipe_name = document.getElementById('recipe_name').value;
+    var recipe_intro = document.getElementById('recipe_intro').value;
+    var recipe_ingredients = document.getElementById('recipe_ingredients').value;
+    var recipe_procedure = document.getElementById('recipe_procedure').value;
 
-    var recipe_image = getInputValue('recipe_image');
+    var image = document.getElementById('recipe_image').files[0];
+    var imageName = image.name;
+    var storageRef=firebase.storage().ref('Recipe_Images/'+imageName);
+    var uploadTask=storageRef.put(image);
 
-    saveRecipe(recipe_id,recipe_name,recipe_intro,recipe_ingredients,recipe_procedure,recipe_image);
-    addRecipeForm.reset();
-}
-
-function getInputValue(id){
-    return document.getElementById(id).value;
-}
-
-function saveRecipe(recipe_id,recipe_name,recipe_intro,recipe_ingredients,recipe_procedure,recipe_image){
-    var newRecipe = userRecipe.push();
-    newRecipe.set({
-        recipe_id:recipe_id,
-        recipe_name:recipe_name,
-        recipe_intro:recipe_intro,
-        recipe_ingredients:recipe_ingredients,
-        recipe_procedure:recipe_procedure,
-        recipe_image:recipe_image
+    uploadTask.on('state_changed',function(snapshot){
+        var progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
+        console.log("upload is "+progress+" done");
+    },function(error){
+        console.log(error.message);
+    },function(){
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL){ 
+            var userRecipe = firebase.database().ref('Recipes/');
+            var newRecipe = userRecipe.push();
+            newRecipe.set({
+                recipe_id:recipe_id,
+                recipe_name:recipe_name,
+                recipe_intro:recipe_intro,
+                recipe_ingredients:recipe_ingredients,
+                recipe_procedure:recipe_procedure,
+                recipe_image:downloadURL
+            },function(error){
+                if(error){
+                    alert("Error while uploading");
+                }else{
+                    alert("Successfully uploaded");
+                    addRecipeForm.reset();
+                    $('#exampleModal').modal('hide');
+                    getRecipes();
+                }
+            });
+        });
     });
-
-    getRecipes();
 }
 
+
+window.onload=function(){
+    this.getRecipes();
+}
 
 function getRecipes(){
-    userRecipe.on('value',function(snapshot){
-        var childData = snapshot.val();
-        var keys = Object.keys(childData);
+    firebase.database().ref('Recipes').once('value').then(function(snapshot){
+        var data=snapshot.val();
         
         var recipes = document.getElementById('yourRecipes');
-        var eachRecipe='';
-        for(var i=0; i<keys.length; i++){
-            var key = keys[i];
-            var recipe_id = childData[key].recipe_id;
-            var recipe_image = childData[key].recipe_image;
-            var recipe_name = childData[key].recipe_name;
-            var recipe_intro = childData[key].recipe_intro;
-            var recipe_ingredients = childData[key].recipe_ingredients;
-            var recipe_procedure = childData[key].recipe_procedure;
+        var eachRecipe = '';
 
-            //console.log(recipe_id,recipe_name,recipe_ingredients,recipe_procedure);
+        for(let[key,value] of Object.entries(data)){
+            
             eachRecipe +=
-            `<div class="card shadow h-100" style="width: 18rem;">
-
+            `<div class="card shadow h-100" style="width: 20rem;">
                 <img id="output_recipe_image" 
-                    src="${recipe_image}"
+                    src="${value.recipe_image}"
                     class="card-img-top" 
                     alt="Card image cap"
-                />
+                />   
                 <div class="card-body">
-                  <h5 class="card-title">${recipe_name}</h5>
-                  <p class="card-text">
-                    <textarea class="form-control form-control-sm" rows="3" cols="63">
-                    ${recipe_intro}
-                    </textarea>
-                  </p>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                      View Recipe
-                  </button>
-
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <h5 class="card-title d-flex justify-content-between">
+                        ${value.recipe_name}
+                    </h5>
+                    
+                    <p class="card-text" rows="3" >
+                        <input type="text" class="form-control-plaintext" readonly
+                            value="${value.recipe_intro}"
+                        />
+                    </p>
+                
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#${key}">
+                        View Recipe
+                    </button>
+    
+                 
+                  <div class="modal fade" id="${key}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                           <div class="modal-content">
                               <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle">${recipe_name}</h5>
+                                  <h5 class="modal-title" id="exampleModalLongTitle">${value.recipe_name}</h5>
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                       <span aria-hidden="true">&times;</span>
                                   </button>
                               </div>
                               <div class="modal-body">
                                 <img id="output_recipe_image" 
-                                    src="${recipe_image}"
+                                    src="${value.recipe_image}"
                                     class="card-img-top" 
                                     alt="Card image cap"
                                 />
                                   <h5 class="modal-title" id="exampleModalLongTitle">Ingredients</h5>
-                                  ${recipe_ingredients}
+                                  ${value.recipe_ingredients}
                                   <h5 class="modal-title" id="exampleModalLongTitle">Procedure</h5>
-                                  ${recipe_procedure}
+                                  ${value.recipe_procedure}
                               </div>
                               <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                               </div>
+                              
                           </div>
                       </div>
                   </div>
@@ -135,58 +146,15 @@ function getRecipes(){
         }
         recipes.innerHTML = eachRecipe;
     })
+};
+
+function delete_recipe(key){
+    firebase.database().ref('Recipes/'+key).remove();
+    getRecipes();
 }
 
-
-
-// function getRecipes(){
-//     var recipes = document.getElementById('yourRecipes');
-//    var eachRecipe = '';
-//     firebase.database().ref('Recipes').on('value',function(snapshot){
-//         snapshot.forEach(function(childSnapshot){
-//             var childKey = childSnapshot.key;
-//             var childData = childSnapshot.val();
-
-//             console.log(childKey,childData);
-
-//             eachRecipe +=
-//             `<div class="card shadow p-3 col-4" style="width: 18rem;">
-//                 <img class="card-img-top" src="${childData['recipe_image']}" alt="Card image cap">
-//                 <div class="card-body">
-//                     <h5 class="card-title">${childData['recipe_name']}</h5>
-//                     <p class="card-text">
-//                         ${childData['recipe_intro']}
-//                     </p>
-//                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-//                         View Recipe
-//                     </button>
-
-//                     <!-- Modal -->
-//                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-//                         <div class="modal-dialog modal-dialog-centered" role="document">
-//                             <div class="modal-content">
-//                                 <div class="modal-header">
-//                                     <h5 class="modal-title" id="exampleModalLongTitle">${childData['recipe_name']}</h5>
-//                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-//                                         <span aria-hidden="true">&times;</span>
-//                                     </button>
-//                                 </div>
-//                                 <div class="modal-body">
-//                                     ${childData['recipe_image']}
-//                                     <h5 class="modal-title" id="exampleModalLongTitle">Ingredients</h5>
-//                                     ${childData['recipe_ingredients']}
-//                                     <h5 class="modal-title" id="exampleModalLongTitle">Procedure</h5>
-//                                     ${childData['recipe_procedure']}
-//                                 </div>
-//                                 <div class="modal-footer">
-//                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>`;
-//         })
-//         recipes.innerHTML=eachRecipe;
-//     })
-// }
+{/* <div class="card-footer d-flex justify-content-between">
+<button id="${key}" onclick="delete_recipe(this.id)" class="btn btn-danger">
+    Delete Recipe
+</button>
+</div> */}
