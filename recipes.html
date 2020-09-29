@@ -19,7 +19,7 @@
     
     <title>JavaScript Recipe App</title>
     <link rel="icon" href="recipe logo.jpg" width="100%" height="100%">
-   <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
     
   </head>
@@ -81,33 +81,30 @@
                             <div class="modal-body">
                               <form>
                                 <div class="form-group">
+                                  <label for="recipe_name">Recipe Name</label>
                                     <input id="recipe_name" class="form-control form-control-sm" type="text" placeholder="Recipe Name(Ex: Biryani)" required>
                                 </div>
                                 <div class="form-group">
+                                  <label for="recipe_intro">About Recipe</label>
                                   <textarea id="recipe_intro" class="form-control" placeholder="Recipe Intro" rows="3" cols="63" >
-                                  
                                   </textarea>
                                 </div>
                                 <div class="form-group">
-                                    <textarea id="recipe_ingredient" class="form-control form-control-sm" type="text" rows="4" cols="63" >
-                                    Ingredients
-                                      Example : 
-                                      1. Onions - 4
-                                      2. Atta - 1kg
-                                      3. Eggs - 3 etc...
+                                    <label for="recipe_ingredients">Recipe Ingredients</label>
+                                    <textarea id="recipe_ingredients" class="form-control" type="text" rows="3" cols="63" >
                                     </textarea>
                                 </div>
                                 <!-- <button id="addIngredient" type="submit" class="btn btn-primary mb-2">Add Ingredient</button> -->
                                 <div class="form-group">
-                                    <textarea id="recipe_procedure" class="form-control" placeholder="Procedure For Recipe" rows="4" cols="63" >
-                                    
+                                    <label for="recipe_procedure">Recipe Procedures</label>
+                                    <textarea id="recipe_procedure" class="form-control" rows="4" cols="63" >                                   
                                     </textarea>
                                 </div>
                                 <div class="form-group">
-                                  <input id="recipe_image" 
-                                          
-                                          class="form-control form-control-xs m-1" 
-                                          type="file" accept="image/*" 
+                                  <label for="recipe_image">Recipe Image</label>
+                                  <input id="recipe_image"     
+                                      class="form-control-file" 
+                                      type="file" accept="image/*" 
                                   />
                                   <!-- <img id="output_recipe_image" style="width:100px;height:100px;"/> -->
                                 </div>
@@ -115,7 +112,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button id="saveRecipeId" onclick="saveRecipe()" type="submit" class="btn btn-primary">Save Recipe</button>
+                              <button id="saveRecipeId" type="submit" class="btn btn-primary">Save Recipe</button>
                             </div>
                         </div>
                     </div>
@@ -149,32 +146,35 @@
     </section>
 
     <!-- Footer -->
-    <footer class="container-fluid footer text-center bg-dark py-1 mt-3">
-      <p class="m-2 text-white">Copyright &copy; 2020 
-        <a href="https://phanindra-reddy.github.io/portfolio/" 
-          target="_blank" class="text-white" 
-          style="text-decoration:underline;cursor: pointer;"
-        >
-          Phanindra Reddy
-        </a>
-      </p>
-    </footer>
+    <section class="container-fluid recipe_footer-section">
+      <footer class="footer text-center bg-dark py-1 fixed-bottom">
+        <p class="m-2 text-white">Copyright &copy; 2020 
+          <a href="https://phanindra-reddy.github.io/portfolio/" 
+            target="_blank" class="text-white" 
+            style="text-decoration:underline;cursor: pointer;"
+          >
+            Phanindra Reddy
+          </a>
+        </p>
+      </footer>
+    </section>
 
 
     <!-- Firebase Database -->
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="/__/firebase/7.21.0/firebase-app.js"></script>
+    <!-- <script src="/__/firebase/7.21.0/firebase-app.js"></script> -->
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
     https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="/__/firebase/7.21.0/firebase-analytics.js"></script>
+    <!-- <script src="/__/firebase/7.21.0/firebase-analytics.js"></script> -->
 
     <!-- Initialize Firebase -->
-    <script src="/__/firebase/init.js"></script>
+    <!-- <script src="/__/firebase/init.js"></script> -->
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-storage.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
