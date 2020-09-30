@@ -60,7 +60,7 @@ ul.a {
 }
 .card-img-top{
     width: 100%;
-    height: auto;
+    height: 40vh;
     object-fit: cover;
 }
 .card-text{
@@ -123,5 +123,10 @@ textarea:-ms-input-placeholder {
 @media screen and (max-width:360px){
     .main-container h3{
         font-size:1.3rem;
+    }
+    .card-img-top{
+    width: 100%;
+    height: 30vh;
+    object-fit: cover;
     }
 }
