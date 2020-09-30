@@ -101,6 +101,9 @@ function getRecipes(){
                 <div class="card-body">
                     <h5 class="card-title d-flex justify-content-between">
                         ${value.recipe_name}
+                        <button id="${key}" onclick="delete_recipe(this.id)" class="btn btn-danger" title="Delete Recipe">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </h5>
                     
                     <p class="card-text" rows="3" >
@@ -109,38 +112,38 @@ function getRecipes(){
                         />
                     </p>
                 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#${key}">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#${key}${value.recipe_id}">
                         View Recipe
                     </button>
     
                  
-                  <div class="modal fade" id="${key}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                          <div class="modal-content">
-                              <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLongTitle">${value.recipe_name}</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                  </button>
-                              </div>
-                              <div class="modal-body">
-                                <img id="output_recipe_image" 
-                                    src="${value.recipe_image}"
-                                    class="card-img-top" 
-                                    alt="Card image cap"
-                                />
-                                  <h5 class="modal-title" id="exampleModalLongTitle">Ingredients</h5>
-                                  ${value.recipe_ingredients}
-                                  <h5 class="modal-title" id="exampleModalLongTitle">Procedure</h5>
-                                  ${value.recipe_procedure}
-                              </div>
-                              <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              </div>
-                              
-                          </div>
-                      </div>
-                  </div>
+                    <div class="modal fade" id="${key}${value.recipe_id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                             <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">${value.recipe_name}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <img id="output_recipe_image" 
+                                        src="${value.recipe_image}"
+                                        class="card-img-top" 
+                                        alt="Card image cap"
+                                    />
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Ingredients</h5>
+                                        ${value.recipe_ingredients}
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Procedure</h5>
+                                        ${value.recipe_procedure}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>`;
         }
